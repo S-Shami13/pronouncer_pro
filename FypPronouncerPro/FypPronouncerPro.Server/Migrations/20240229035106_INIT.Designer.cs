@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FypPronouncerPro.Server.Migrations
 {
-    [DbContext(typeof(DataBaseContext))]
+    [DbContext(typeof(PronouncerDbContext))]
     [Migration("20240229035106_INIT")]
     partial class INIT
     {

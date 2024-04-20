@@ -1,12 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 namespace FypPronouncerPro.Server.Models
 {
-    public class DataBaseContext : DbContext
+    public class PronouncerDbContext(DbContextOptions options) : DbContext(options)
     {
-        public DataBaseContext(DbContextOptions options) : base(options)
-        {
-
-        }
         public DbSet<StudentsModel> Students { get; set; }
         public DbSet<LessonsModel> Lessons { get; set; }
         public DbSet<MispronunciationsModel> Mispronunciations { get; set; }

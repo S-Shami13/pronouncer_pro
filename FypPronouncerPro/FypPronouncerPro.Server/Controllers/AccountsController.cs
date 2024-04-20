@@ -9,15 +9,9 @@ namespace FypPronouncerPro.Server.Controllers
 {
     [ApiController]
     [Route("AccountsManagement")]
-    public class AccountsController : Controller
+    public class AccountsController(PronouncerDbContext dbContext) : Controller
     {
-        private readonly DataBaseContext dbContext;
-        public AccountsController(DataBaseContext dbContext)
-        {
-            this.dbContext = dbContext;
-        }
-
-        // sign up method
+        private readonly PronouncerDbContext dbContext = dbContext;
 
         [HttpPost]
         [Route("signup")]
@@ -26,12 +20,12 @@ namespace FypPronouncerPro.Server.Controllers
             if (student_dto == null) { return BadRequest("Empty Data"); }
 
             var emailExists = await dbContext.Students.Where(x => x.Email == student_dto.Email).FirstOrDefaultAsync();
-            var nameExists = await dbContext.Students.Where(x => x.FullName == student_dto.FullName).FirstOrDefaultAsync();
-
             if (emailExists != null)
             {
                 return BadRequest("Email already exists please use another email");
             }
+            
+            var nameExists = await dbContext.Students.Where(x => x.FullName == student_dto.FullName).FirstOrDefaultAsync();
             if (nameExists != null)
             {
                 return BadRequest("Ussername already exists please use another username");
@@ -58,10 +52,10 @@ namespace FypPronouncerPro.Server.Controllers
         {
             if (student_dto == null) { return BadRequest("Empty Fields"); }
 
-            StudentsModel student = await dbContext.Students.Where(x => x.Email == student_dto.Email).FirstOrDefaultAsync();
+            var student = await dbContext.Students.Where(x => x.Email == student_dto.Email).FirstOrDefaultAsync();
             if (student == null)
             {
-                return BadRequest("Email does not exists");
+                return BadRequest("Please register yourself first!");
             }
             if (student.Password != student_dto.Password)
             {
@@ -77,7 +71,6 @@ namespace FypPronouncerPro.Server.Controllers
             if (student_dto.Email == null) { return BadRequest("invalid data"); }
 
             // check if the user exists or not
-
             var user = await dbContext.Students.Where(x => x.Email == student_dto.Email).FirstOrDefaultAsync();
             if (user == null) 
             { 

@@ -1,7 +1,8 @@
-import { Paper, TableContainer, Typography, Table, TableBody, TableHead, TableRow, TableCell, Button } from '@mui/material';
+import { Paper, TableContainer, Typography,Rating, Table, TableBody, TableHead, TableRow, TableCell, Button } from '@mui/material';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import { Link } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
+import Brightness1Icon from '@mui/icons-material/Brightness1';
 
 function MyLessonsTable({data}) {
 
@@ -20,7 +21,11 @@ function MyLessonsTable({data}) {
                     {data.map((lesson) => (
                         <TableRow key={lesson.lessonId}>
                             <TableCell><Typography variant="body1" sx={{ fontFamily: "comfortaa" }}>{lesson.lessonTitle}</Typography></TableCell>
-                            <TableCell><Typography variant="body1" sx={{ fontFamily: "comfortaa" }}>{lesson.lessonLevel}</Typography></TableCell>
+                            <TableCell><Typography variant="body1" sx={{ fontFamily: "comfortaa" }}>
+                                {lesson.lessonLevel === 1 && <Rating sx={{ color: "#66BB6A" }} icon={<Brightness1Icon />} defaultValue={1} max={1} readOnly />}
+                                {lesson.lessonLevel === 2 && <Rating sx={{ color: "#FFA726" }} icon={<Brightness1Icon />} defaultValue={2} max={2} readOnly />}
+                                {lesson.lessonLevel === 3 && <Rating sx={{ color: "#EF5350" }} icon={<Brightness1Icon />} defaultValue={3} max={3} readOnly />}
+                            </Typography></TableCell>
                             <TableCell>
                                 <Typography variant="body1" sx={{ fontFamily: "comfortaa" }}>
                                     {lesson.inProgress && lesson.isComplited ? "Completed" : lesson.inProgress === false ? "Joined but not started" : "In progress"} 

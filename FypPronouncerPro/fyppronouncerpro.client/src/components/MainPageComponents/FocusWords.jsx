@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 function FocusWords({ focusWords }) {
     return (
         <>
-            <Container sx={{ padding: '15px', background: '#fcebee', borderRadius: '8px', width: "50%" }}>
+            <Container sx={{ padding: '15px', background: '#fcebee', borderRadius: '8px', width: {md:'50%', xs:"100%"} }}>
                 <Typography
                     component="h1"
                     variant="h5"

@@ -8,6 +8,14 @@ const AccentSelectionMenu = () => {
     const handleClick = (event) => {
         setAnchorEI(event.currentTarget);
     };
+    const handleUsAccent = () => {
+        localStorage.setItem("accent", 1);
+        handleClose();
+    }
+    const handleUkAccent = () => {
+        localStorage.setItem("accent", 5);
+        handleClose();
+    }
     const handleClose = () => {
         setAnchorEI(null);
     };
@@ -16,7 +24,7 @@ const AccentSelectionMenu = () => {
             <IconButton
                 id="AccentButton"
                 variant="outlined"
-                sx={{ mr: 2, color: "inherit" }}
+                sx={{ color: "inherit" }}
                 onClick={handleClick}
                 aria-controls={open ? "AccentMenu" : undefined}
                 aria-haspopup="true"
@@ -33,8 +41,8 @@ const AccentSelectionMenu = () => {
                 }}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleClose}>en-US</MenuItem>
-                <MenuItem onClick={handleClose}>en-UK</MenuItem>
+                <MenuItem onClick={handleUsAccent}>en-US</MenuItem>
+                <MenuItem onClick={handleUkAccent}>en-UK</MenuItem>
             </Menu>
         </>
     );

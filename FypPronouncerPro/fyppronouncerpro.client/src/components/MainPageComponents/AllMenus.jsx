@@ -1,4 +1,4 @@
-import { Menu, MenuItem, Button} from "@mui/material";
+import { Menu, MenuItem, Button, Tooltip, Zoom} from "@mui/material";
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -7,8 +7,6 @@ import { useState } from "react";
 import { PropTypes } from 'prop-types';
 import { useEffect } from "react";
 import { GetCompletedLessons } from "../../ApiRequests";
-
-
 
 export function FilterMyLessonMenu({ onFilterClick }) {
 
@@ -142,6 +140,7 @@ export function FilterAllParaLessonMenu({onFilterResult}) {
 
     return (
         <>
+            <Tooltip title="Complete easy lessons to unlock medium and hard" arrow TransitionComponent={Zoom}> 
             <button
                 id="filterBtnId"
                 onClick={handleFilterClick}
@@ -151,7 +150,7 @@ export function FilterAllParaLessonMenu({onFilterResult}) {
                 aria-expanded={open ? "true" : undefined}
             >
                 <MenuBookIcon fontSize="large" />
-            </button>
+                </button></Tooltip>
             <Menu
                 id="filterMenuId"
                 open={open}

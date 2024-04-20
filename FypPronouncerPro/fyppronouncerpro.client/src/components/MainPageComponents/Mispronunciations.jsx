@@ -20,7 +20,7 @@ function Mispronunciations({ title, onMispronunciations }) {
     }, [title]);
 
     return (
-        <Paper sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', minWidth:'25%', maxWidth:'40%' }}>
+        <Paper sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px' }}>
             <Typography
                 component="h1"
                 variant="h5"

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FypPronouncerPro.Server.Migrations
 {
-    [DbContext(typeof(DataBaseContext))]
+    [DbContext(typeof(PronouncerDbContext))]
     partial class DataBaseContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

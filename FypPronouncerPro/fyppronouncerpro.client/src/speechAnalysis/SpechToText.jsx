@@ -22,7 +22,7 @@ const SpeechToText = ({ onSpeechRecognitionResult, showText }) => {
         setListening(!Listening);
 
         if (Listening === true) {
-            listen({ continuous: true, language: "en-US" });
+            listen({ continuous: true, language: "en-Us" });
         }
         if (Listening === false){
             console.log(value);

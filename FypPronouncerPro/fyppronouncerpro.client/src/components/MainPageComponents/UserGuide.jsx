@@ -5,7 +5,7 @@ import { Typography, Tooltip, Zoom, Box, Stepper, StepLabel, Step } from '@mui/m
 
 function UserGuide() {
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%', display: { md:'block', xs:'none' } }}>
             <Stepper activeStep={3} alternativeLabel>
                 <Tooltip title="Lissen" arrow TransitionComponent={Zoom}>
                     <Step >

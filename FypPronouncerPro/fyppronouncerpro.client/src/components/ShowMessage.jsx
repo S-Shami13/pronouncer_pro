@@ -1,39 +1,25 @@
-import { useEffect, useState } from 'react';
-import { Snackbar, SnackbarContent, Typography } from '@mui/material';
+import { useEffect } from 'react';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { PropTypes } from 'prop-types';
 
 function ShowMessage({ message }) {
-    const [open, setOpen] = useState(true);
-
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setOpen(false);
-        }, 3000);
+        // Show toast when component mounts
+        toast.info(message, {
+            autoClose: 3000, // Close after 3 seconds
+            position: toast.POSITION.BOTTOM_RIGHT, // Position the toast
+            closeButton: false, // Don't show a close button
+            className: 'toast-background', // Add custom class for styling
+        });
 
-        return () => clearTimeout(timer);
-    }, []);
+        // Clean up function
+        return () => {
+            // You can add cleanup code here if necessary
+        };
+    }, [message]);
 
-    return (
-        <Snackbar
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-            }}
-            open={open}
-            autoHideDuration={3000}
-        >
-            <SnackbarContent
-                style={{
-                    backgroundColor: '#f02e4e', // Change the background color here
-                }}
-                message={
-                    <Typography variant="h6">
-                        {message}
-                    </Typography>
-                }
-            />
-        </Snackbar>
-    );
+    return null;
 }
 
 ShowMessage.propTypes = {

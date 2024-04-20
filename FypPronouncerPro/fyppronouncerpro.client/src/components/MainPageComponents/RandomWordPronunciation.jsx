@@ -15,6 +15,7 @@ import SpeechToText from "../../speechAnalysis/SpechToText";
 import { TextToSpeech } from "../../speechAnalysis/TextToSpeech";
 import SaveIcon from '@mui/icons-material/Save';
 import { SaveWordInVocabulary } from "../../ApiRequests";
+import { toast } from 'react-toastify';
 
 const Search = styled("div")(({ theme }) => ({
     display: "flex",
@@ -89,9 +90,10 @@ function RandomWordPronunciation() {
         const cleanSpeechResult = speechResult.replace(/[^\w\s]|_/g, "").toLowerCase();
         const cleanWord = searchText.replace(/[^\w\s]|_/g, "").toLowerCase();
 
-        if (cleanSpeechResult === cleanWord) {
+        if (cleanSpeechResult && cleanWord && cleanSpeechResult === cleanWord) {
+            toast.success("Pronunced Correctly", { position: "bottom-left" });
             handleClose();
-        }
+        } 
     }, [speechResult, searchText]);
     return (
         <>

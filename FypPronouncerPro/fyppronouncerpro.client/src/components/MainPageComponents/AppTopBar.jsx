@@ -13,6 +13,7 @@ import AccentSelectionMenu from "../MainPageComponents/AccentSelectionMenu";
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RandomWordPronunciation from "./RandomWordPronunciation";
+import UserProfile from "./UserProfile";
 
 function AppTopBar() {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -24,20 +25,21 @@ function AppTopBar() {
     
     return (
         <>
-                <AppBar position="sticky" sx={{ padding: "10px" }}>
-                    <Toolbar>
-                        <Box sx={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Logo />
-                        <RandomWordPronunciation/>
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <AccentSelectionMenu/>
-                                <button className="transparentButton" style={{ marginLeft: '15px' }} onClick={() => setIsDrawerOpen(true)}>
-                                    <MenuIcon fontSize="large" />
-                                </button>
-                            </Box>
+            <AppBar position="sticky">
+                <Toolbar>
+                    <Box sx={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Logo />
+                    <RandomWordPronunciation />
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent:'space-around' }}>
+                            <AccentSelectionMenu/>
+                            <button className="transparentButton" style={{ margin: '0px 15px 0px 15px' }} onClick={() => setIsDrawerOpen(true)}>
+                                <MenuIcon fontSize="large" />
+                        </button>
+                        <UserProfile/>
                         </Box>
-                    </Toolbar>
-                </AppBar>
+                    </Box>
+                </Toolbar>
+            </AppBar>
             <Drawer
                 open={isDrawerOpen}
                 onClose={() => setIsDrawerOpen(false)}
@@ -54,18 +56,20 @@ function AppTopBar() {
                 </Link>
                 
                 <textarea
-                    rows="10"
+                    rows="20"
                     value={textareaValue}
                     onChange={handleTextareaChange}
                     style={{
                         margin: "15px",
-                        color: "#2196f3",
+                        color: "#000000",
+                        textAlign: 'justify',
                         outline: "2px solid #2196f3",
                         border: "none",
                         placeholder: "Paste Any Paragraph",
+                        resize:"none",
                     }}
                 />
-                <Link to="solo_para_lesson" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Link to={`random_para_lesson/${textareaValue}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     <Button
                         sx={{ m: 2 }}
                         variant="outlined"

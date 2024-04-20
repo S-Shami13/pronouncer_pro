@@ -1,14 +1,17 @@
 import { TextField } from '@mui/material';
 import { useState } from 'react';
 import { SignInUserRequest } from '../../../ApiRequests';
-import ShowMessage from '../../ShowMessage';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function LoginDialogForm() {
+
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
-    const [snackbarMessage, setSnackbarMessage] = useState('');
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,18 +21,17 @@ function LoginDialogForm() {
         e.preventDefault();
         SignInUserRequest(formData)
             .then(responseData => {
-                setSnackbarMessage(responseData);
                 if (responseData.startsWith('Welcome')) {
                     localStorage.setItem("email", formData.email);
-                    localStorage.setItem("password", formData.password);
-                    // Delay navigation by 2 seconds to allow Snackbar to show
-                    setTimeout(() => {
-                        window.location.href = '/main_page';
-                    }, 3000);
+                    localStorage.setItem("accent", 2);
+                    navigate('/main_page');
+                    toast.success("Welcome to PronouncerPro!", {
+                        position: "bottom-right"
+                    });
                 }
             })
             .catch(error => {
-                setSnackbarMessage(error);
+                console.log("catch",error);
             });
     }
 
@@ -70,7 +72,6 @@ function LoginDialogForm() {
                     required
                 />
             </form>
-            {snackbarMessage && <ShowMessage message={snackbarMessage} />}
         </>
     );
 }

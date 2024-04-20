@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FypPronouncerPro.Server.Migrations
 {
-    [DbContext(typeof(DataBaseContext))]
+    [DbContext(typeof(PronouncerDbContext))]
     [Migration("20240306153517_AddLevelProp")]
     partial class AddLevelProp
     {

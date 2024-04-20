@@ -12,9 +12,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { SignUpUserRequest } from '../../../ApiRequests';
-import ShowMessage from "../../ShowMessage";
+import { useNavigate } from 'react-router-dom';
 function SignUp({ signUpOpen }) {
-    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const navigate = useNavigate();
     const [isDialogOpen, setIsDialogOpen] = useState(signUpOpen);
     const handleClose = () => {
         setIsDialogOpen(false);
@@ -28,16 +28,13 @@ function SignUp({ signUpOpen }) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        SignUpUserRequest(formData)
-            .then(responseData => {
-                setSnackbarMessage(responseData);
-            })
-            .catch(error => {
-                setSnackbarMessage(error);
-            });
-
+        const success = await SignUpUserRequest(formData);
+        localStorage.setItem("email", formData.email);
+        if (success) {
+            navigate('/main_page');
+        }
     }
 
     return (
@@ -107,7 +104,6 @@ function SignUp({ signUpOpen }) {
                 </Dialog>
 
             )}
-            {snackbarMessage && <ShowMessage message={snackbarMessage} />}
         </>
     );
 }

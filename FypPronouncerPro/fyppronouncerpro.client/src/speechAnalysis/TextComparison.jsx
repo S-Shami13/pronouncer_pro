@@ -5,7 +5,6 @@ import { TextComparisonRequest, SaveMispronunciations } from '../ApiRequests';
 
 
 const TextComparison = ({ originalText, spokenText, title }) => {
-    /*  const [comparisonResult, setComparisonResult] = useState(null);*/
     const data = {
         OriginalString: originalText,
         SpokenString: spokenText,
@@ -26,9 +25,8 @@ const TextComparison = ({ originalText, spokenText, title }) => {
                     M_What: wordsArray1,
                     M_How: wordsArray2,
                 }
-                SaveMispronunciations(requestObj);
-                window.location.reload();
-                
+                SaveMispronunciations(requestObj); 
+                window.location.reload(true); 
             }
         } catch (error) {
             console.log(error);

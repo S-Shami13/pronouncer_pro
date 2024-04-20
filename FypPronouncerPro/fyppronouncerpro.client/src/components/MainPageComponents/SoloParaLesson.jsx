@@ -24,8 +24,8 @@ function App() {
                     <UserGuide />
                     <FocusWords focusWords={params.focusWords} />
                 </Paper>
-                <Stack sx={{ display: 'flex', flexDirection: "row", my: 4 }}>
-                    <Paper sx={{padding:"30px", marginRight:3, height:"fit-content"} }>
+                <Stack sx={{ display: 'flex', flexDirection: { md: 'row', xs:'column' }, my: 4 }}>
+                    <Paper sx={{ padding: "30px", marginRight: { md: 3, xs: 0 }, marginBottom: { md: 0, xs:3 },height:"fit-content"} }>
                         <Typography
                             component="h1"
                             variant="h4"

@@ -2,7 +2,7 @@ import {
     Table,
     TableBody,
     TableCell,
-    TableHead,
+    Paper,
     TableContainer,
     TableRow,
     Stack,
@@ -10,11 +10,11 @@ import {
     Typography,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import RepeatIcon from '@mui/icons-material/Repeat';
 import { GetVocabularyCollection } from "../ApiRequests";
 import { useState } from "react";
 import { useEffect } from "react";
 import { GetSynonyms, Phonetic, Sentences } from "../mispronunciations/GetSynonyms";
-import { TextToSpeech } from "../speechAnalysis/TextToSpeech";
 
 
 const VocabularyRetentionPage = () => {
@@ -35,64 +35,84 @@ const VocabularyRetentionPage = () => {
         <Stack
             className="VocabularyPageBackground"
         >
-            <Stack sx={{display:'flex', flexDirection:'column', justifyContent:'center', padding:'30px 0px' } }>
-                
-                <TableContainer>
-                    <Table stickyHeader>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell>
-                                    <Typography variant='h6' sx={{ color: "#f02e4e" }}>Sr.</Typography>
-                                </TableCell>
-                                <TableCell>
-                                    <Typography variant='h6' sx={{ color: "#f02e4e" }}>Word.</Typography>
-                                </TableCell>
-                                <TableCell>
-                                    <Typography variant='h6' sx={{ color: "#f02e4e" }}>Phonetic.</Typography>
-                                </TableCell>
-                                <TableCell>
-                                    <Typography variant='h6' sx={{ color: "#f02e4e" }}>Synonyms.</Typography>
-                                </TableCell>
-                                <TableCell>
-                                    <Typography variant='h6' sx={{ color: "#f02e4e" }}>Example Sentence.</Typography>
-                                </TableCell>
-                                <TableCell>
-                                    <Typography variant='h6' sx={{ color: "#f02e4e" }}>Lissen.</Typography>
-                                </TableCell>
-                                <TableCell>
-                                    <Typography variant='h6' sx={{ color: "#f02e4e" }}>Delete.</Typography>
-                                </TableCell>
-                            </TableRow>
-                            {words.map((word, index) => (
-                                <TableRow key={index}>
-                                    <TableCell
-                                        align="center"
-                                    >
-                                        {index + 1}
+            <Stack sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '30px 50px' }}>
+                <Typography
+                    component="h1"
+                    variant="h4"
+                    sx={{
+                        fontFamily: 'comfortaa',
+                        marginBottom: { md: 2, xs: 0 },
+                        color: "#f02e4e",
+                        letterSpacing: { md: '3px', xs: "1px" },
+                    }}
+                >
+                    My Words Collection
+                </Typography>
+                <Paper>
+                    <TableContainer>
+                        <Table stickyHeader>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell>
+                                        <Typography variant='h6' sx={{ color: "#f02e4e" }}>Sr.</Typography>
                                     </TableCell>
                                     <TableCell>
-                                        <Typography >{word.toUpperCase()}</Typography>
-                                    </TableCell>
-                                    <GetSynonyms word={word} />
-                                    <Phonetic word={word} />
-                                    <Sentences word={word}/>
-                                    <TableCell>
-                                        <TextToSpeech para={word}/>
+                                        <Typography variant='h6' sx={{ color: "#f02e4e" }}>Word.</Typography>
                                     </TableCell>
                                     <TableCell>
-                                        <Button
-                                            sx={{ color: "#000000" }}
-                                            disableElevation
-                                            disableRipple
-                                        >
-                                            <DeleteIcon />
-                                        </Button>
+                                        <Typography variant='h6' sx={{ color: "#f02e4e" }}>Phonetic.</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant='h6' sx={{ color: "#f02e4e" }}>Synonyms.</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant='h6' sx={{ color: "#f02e4e" }}>Example Sentence.</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant='h6' sx={{ color: "#f02e4e" }}>Practice.</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant='h6' sx={{ color: "#f02e4e" }}>Delete.</Typography>
                                     </TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                                {words.map((word, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell
+                                            align="center"
+                                        >
+                                            {index + 1}
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography >{word.toUpperCase()}</Typography>
+                                        </TableCell>
+                                        <GetSynonyms word={word} />
+                                        <Phonetic word={word} />
+                                        <Sentences word={word} />
+                                        <TableCell>
+                                            <Button
+                                                color="primary"
+                                                disableElevation
+                                                disableRipple
+                                            >
+                                                <RepeatIcon />
+                                            </Button>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Button
+                                                color="primary"
+                                                disableElevation
+                                                disableRipple
+                                            >
+                                                <DeleteIcon />
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Paper>
+               
             </Stack>
         </Stack>
     );

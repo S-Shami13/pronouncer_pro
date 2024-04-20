@@ -27,7 +27,6 @@
     letter-spacing: 2px;
 }
 
-
 .filterButton {
     padding: 5px 10px;
     border-radius: 60%;
@@ -35,6 +34,12 @@
     background: #f02e4e;
     border: none;
     color: #f2f5fa;
+    cursor:pointer;
+}
+
+.roundStyle{
+    border-right: 1px solid #ffffff;
+    margin-right: 10px;
 }
 
 .transparentButton {

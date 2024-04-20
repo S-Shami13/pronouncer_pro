@@ -6,14 +6,18 @@ import TextComparison from '../../speechAnalysis/TextComparison';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 function FunctionalitySection({ title, content }) {
+    const [speed, setSpeed] = useState(.7);
+    const handleSpeedSelection = (result) => {
+        setSpeed(result);
+    }
     const [speechResult, setSpeechResult] = useState('');
     const handleSpeechRecognitionResult = (result) => {
         setSpeechResult(result);
     }
     return (
         <Stack direction="row" alignItems="center" justifyContent="center">
-            <PlaybackSpeedSelectionMenu />
-            <TextToSpeech para={content} />
+            <PlaybackSpeedSelectionMenu onSpeedSelection={handleSpeedSelection} />
+            <TextToSpeech para={content} speed={speed} />
             <SpeechToText onSpeechRecognitionResult={handleSpeechRecognitionResult} showText={false} />
             {speechResult && (<TextComparison originalText={content} spokenText={speechResult} title={title} />)}
         </Stack>

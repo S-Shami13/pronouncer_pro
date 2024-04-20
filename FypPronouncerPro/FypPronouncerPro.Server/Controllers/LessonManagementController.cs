@@ -13,8 +13,8 @@ namespace FypPronouncerPro.Server.Controllers
     [Route("ParaLessonManagement")]
     public class LessonManagementController : Controller
     {
-        private readonly DataBaseContext databaseContext;
-        public LessonManagementController(DataBaseContext databaseContext)
+        private readonly PronouncerDbContext databaseContext;
+        public LessonManagementController(PronouncerDbContext databaseContext)
         {
             this.databaseContext = databaseContext;
         }
@@ -295,15 +295,13 @@ namespace FypPronouncerPro.Server.Controllers
             if (student != null)
             {
                 var userName = student.FullName;
-
-                // Retrieve lessons that are not in UserLessons
                 var lessonsInUserLessons = await databaseContext.UserLessons.Where(x => x.UserName == userName).ToListAsync();
 
                 return Ok(lessonsInUserLessons);
             }
             else
             {
-                return BadRequest("Student not found"); // Or throw new Exception("Student not found");
+                return BadRequest("Student not found"); 
             }
         }
 
@@ -319,7 +317,7 @@ namespace FypPronouncerPro.Server.Controllers
                 var userName = student.FullName;
                 var mispronunciations = await databaseContext.Mispronunciations
                 .Where(x => x.UserName == username && x.LessonTitle == title)
-                .Select(x => new { x.M_What, x.M_How }) // Projecting to a new object with only m_What and m_How
+                .Select(x => new { x.M_What, x.M_How })
                 .ToListAsync();
 
                 return Ok(mispronunciations);
@@ -367,14 +365,13 @@ namespace FypPronouncerPro.Server.Controllers
             {
                 var userName = student.FullName;
 
-                // Retrieve lessons that are not in UserLessons
                 var vocabularyCollection = await databaseContext.Vocabulary.Where(x => x.UserName == userName).ToListAsync();
 
                 return Ok(vocabularyCollection);
             }
             else
             {
-                return BadRequest("Student not found"); // Or throw new Exception("Student not found");
+                return BadRequest("Student not found"); 
             }
         }
 

@@ -21,7 +21,8 @@
     "react-player": "^2.14.1",
     "react-router-dom": "^6.14.2",
     "react-speech-kit": "^3.0.1",
-    "react-speech-recognition": "^3.10.0"
+    "react-speech-recognition": "^3.10.0",
+    "react-toastify": "^10.0.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

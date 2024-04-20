@@ -7,6 +7,7 @@ import {
     Tooltip,
     Zoom,
 } from "@mui/material";
+import { toast } from 'react-toastify';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
@@ -31,7 +32,8 @@ function SpeechToTextDialog({ word, title }) {
         const cleanSpeechResult = speechResult.replace(/[^\w\s]|_/g, "").toLowerCase();
         const cleanWord = word.replace(/[^\w\s]|_/g, "").toLowerCase();
 
-        if (cleanSpeechResult === cleanWord) {
+        if (cleanSpeechResult && cleanWord && cleanSpeechResult === cleanWord) {
+            toast.success("Pronunced Correctly", { position: "bottom-left" });
             handleClose();
             RemoveMispronunciation(localStorage.email, title, word);
             window.location.reload();

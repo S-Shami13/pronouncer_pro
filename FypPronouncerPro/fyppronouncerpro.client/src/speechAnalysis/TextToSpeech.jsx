@@ -5,8 +5,8 @@ import HearingIcon from '@mui/icons-material/Hearing';
 import { useSpeechSynthesis } from "react-speech-kit";
 import { useState, useEffect } from 'react';
 
-export const TextToSpeech = ({ para }) => {
-    const { speak, cancel, speaking } = useSpeechSynthesis();
+export const TextToSpeech = ({ para, speed }) => {
+    const { speak, cancel, speaking, voices } = useSpeechSynthesis();
 
     const [isActiveHearing, setActiveHearing] = useState(false);
 
@@ -16,7 +16,7 @@ export const TextToSpeech = ({ para }) => {
 
         if (isActiveHearing === true) {
             speak({
-                text: para, rate: ".7"
+                text: para, rate: speed, voice: voices[localStorage.accent]
             });
         }
 
@@ -39,20 +39,24 @@ export const TextToSpeech = ({ para }) => {
     );
 };
 
+TextToSpeech.propTypes = {
+    para: PropTypes.string.isRequired,
+    speed: PropTypes.number.isRequired,
+};
 
 export const WordToSpeech = ({ word }) => {
-    const { speak, cancel, speaking } = useSpeechSynthesis();
+    const { speak, cancel, speaking, voices } = useSpeechSynthesis();
     const [isActiveHearing, setActiveHearing] = useState(false);
 
     useEffect(() => {
         if (isActiveHearing) {
             speak({
-                text: word, rate: ".7"
+                text: word, rate: ".7", voice: voices[localStorage.accent]
             });
         } else {
             cancel();
         }
-    }, [isActiveHearing, speak, cancel, word]);
+    }, [isActiveHearing, speak, cancel, word, voices]);
 
     const handleToggleHearing = () => {
         setActiveHearing((prevIsActive) => !prevIsActive);
@@ -67,13 +71,9 @@ export const WordToSpeech = ({ word }) => {
                 {word}
             </ button>
         </Tooltip>
-       
+
     );
 }
-
-TextToSpeech.propTypes = {
-    para: PropTypes.string.isRequired,
-};
 
 WordToSpeech.propTypes = {
     word: PropTypes.string.isRequired,

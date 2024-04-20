@@ -12,23 +12,21 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ForgotPasswordRequest } from '../../../ApiRequests';
-import  ShowMessage  from '../../ShowMessage'
 function ForgotPassword({ ForgotOpen }) {
 
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
-    const [response, setResponse] = useState('');
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
 
     const handleFormSubmit = async (e) => {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
         const result = await ForgotPasswordRequest(formData);
-        setResponse(result);
+        console.log(result);
     };
 
 
@@ -92,7 +90,6 @@ function ForgotPassword({ ForgotOpen }) {
                                         required
                                     />
                                 </form>
-                                {response && <ShowMessage message={response}/> }
                             </Stack>
                         </DialogContent>
                     </Stack>

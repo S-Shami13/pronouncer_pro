@@ -27,7 +27,7 @@ function TopBar() {
 
     return (
         <>
-            <AppBar position="sticky" color="info" sx={{ padding: {md:'10px', xs:'5px'} } }>
+            <AppBar position="sticky" color="info">
                 <Toolbar>
                     <Box
                         sx={{
