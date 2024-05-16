@@ -13,7 +13,6 @@ function AddLesson() {
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === 'focusWords') {
-            // Split the input value by comma to create an array of strings
             const wordsArray = value.split(',');
             setLessonData({ ...lessonData, [name]: wordsArray });
         } else {
@@ -28,8 +27,8 @@ function AddLesson() {
     };
 
     return (
-        <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <Typography variant="h4" sx={{ marginBottom: "10px" }}>Add Lesson</Typography>
+        <Container sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography variant="h4" sx={{ margin: "10px 0px" }}>Add Lesson</Typography>
             <form onSubmit={handleSubmit}>
                 <TextField
                     sx={{ mb: 2, width: "100%", p: 0 }}
@@ -48,6 +47,7 @@ function AddLesson() {
                     value={lessonData.lessonContent}
                     onChange={handleChange}
                     required
+                    multiline
                 />
                 <TextField
                     sx={{ mb: 2, width: "100%", p: 0 }}

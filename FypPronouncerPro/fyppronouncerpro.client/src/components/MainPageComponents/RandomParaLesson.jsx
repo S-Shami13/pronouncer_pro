@@ -18,7 +18,10 @@ import { TextToSpeech, WordToSpeech } from "../../speechAnalysis/TextToSpeech";
 import SaveIcon from '@mui/icons-material/Save';
 import SpeechToText from "../../speechAnalysis/SpechToText";
 import { SaveWordInVocabulary, TextComparisonRequest } from "../../ApiRequests";
-
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import { Link } from 'react-router-dom';
+import RepeatIcon from '@mui/icons-material/Repeat';
+import WordDialog from '../../components/MainPageComponents/WordDialog';
 function RandomParaLesson() {
     const params = useParams();
     const [speed, setSpeed] = useState(0.7);
@@ -26,6 +29,8 @@ function RandomParaLesson() {
     const [speechResult, setSpeechResult] = useState('');
     const [what, setWhat] = useState([]);
     const [how, setHow] = useState([]);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [repeatWord, setRepeatWord] = useState('');
 
     const handleSpeedSelection = (result) => {
         setSpeed(result);
@@ -34,6 +39,16 @@ function RandomParaLesson() {
     const handleSpeechRecognitionResult = (result) => {
         setSpeechResult(result);
     };
+
+    const handleRepeatWord = (word) => {
+        setIsDialogOpen(true);
+        setRepeatWord(word);
+    };
+
+    const handleClose = (word) => {
+        setIsDialogOpen(false);
+        setWhat(prevWhat => prevWhat.filter(w => w !== word));
+    }
 
     const compareTexts = async () => {
         try {
@@ -66,8 +81,11 @@ function RandomParaLesson() {
     return (
         <>
             <Stack sx={{ padding: { md: '50px', xs: '20px' }, display: 'flex', flexDirection: 'column' }}>
+                <Link to="/main_page">
+                    <KeyboardBackspaceIcon fontSize="large" sx={{ color: "#f02e4e" }} />
+                </Link>
                 <Stack sx={{ display: 'flex', flexDirection: "row", my: 4 }}>
-                    <Paper sx={{ padding: "30px", marginRight: 3, height: "fit-content" }}>
+                    <Paper sx={{ padding: "30px",  height: "fit-content" }}>
                         <Typography
                             component="h1"
                             variant="h4"
@@ -120,6 +138,12 @@ function RandomParaLesson() {
                                                     <Typography sx={{ color: "#f02e4e", textTransform: 'capitalize' }} variant="h6" display="inline-block">
                                                         <WordToSpeech word={word} />
                                                     </Typography>
+                                                    <IconButton
+                                                        sx={{ color: "#2196f3", }}
+                                                        onClick={() => handleRepeatWord(word)}
+                                                    >
+                                                        <RepeatIcon />
+                                                    </IconButton>
                                                     <IconButton onClick={() => handleSaveWordInVocabulary(word)} sx={{ color: "#f02e4e" }}>
                                                         <SaveIcon />
                                                     </IconButton>
@@ -131,10 +155,12 @@ function RandomParaLesson() {
                                         </TableCell>
                                     </TableRow>
                                 ))}
+                                <WordDialog open={isDialogOpen} onClose={() => handleClose(repeatWord)} word={repeatWord} />
                             </TableBody>
                         </Table>
                     </TableContainer>
                 )}
+
             </Stack>
             
         </>

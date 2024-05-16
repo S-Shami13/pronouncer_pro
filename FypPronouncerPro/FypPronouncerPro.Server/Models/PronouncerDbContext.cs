@@ -8,6 +8,7 @@ namespace FypPronouncerPro.Server.Models
         public DbSet<MispronunciationsModel> Mispronunciations { get; set; }
         public DbSet<UserLessonsModel> UserLessons { get; set; }
         public DbSet<VocabularyModel> Vocabulary { get; set; }
+        public DbSet<AdminModel> Admin { get; set; }
 
     }
 }

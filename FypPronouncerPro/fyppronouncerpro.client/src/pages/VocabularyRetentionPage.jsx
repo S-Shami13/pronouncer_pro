@@ -6,19 +6,31 @@ import {
     TableContainer,
     TableRow,
     Stack,
-    Button,
+    IconButton,
     Typography,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import RepeatIcon from '@mui/icons-material/Repeat';
 import { GetVocabularyCollection } from "../ApiRequests";
 import { useState } from "react";
 import { useEffect } from "react";
 import { GetSynonyms, Phonetic, Sentences } from "../mispronunciations/GetSynonyms";
-
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import { Link } from 'react-router-dom';
+import WordDialog from "../components/MainPageComponents/WordDialog";
 
 const VocabularyRetentionPage = () => {
     const [words, setWords] = useState([]);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [repeatWord, setRepeatWord] = useState('');
+
+    const handleRepeatWord = (word) => {
+        setIsDialogOpen(true);
+        setRepeatWord(word);
+    };
+
+    const handleClose = () => {
+        setIsDialogOpen(false);
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,11 +43,15 @@ const VocabularyRetentionPage = () => {
         };
         fetchData();
     }, []);
+
     return (
         <Stack
             className="VocabularyPageBackground"
         >
-            <Stack sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '30px 50px' }}>
+            <Link to="/main_page">
+                <KeyboardBackspaceIcon fontSize="large" sx={{ color: "#f02e4e" }} />
+            </Link>
+            <Stack sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '10px 50px' }}>
                 <Typography
                     component="h1"
                     variant="h4"
@@ -71,9 +87,6 @@ const VocabularyRetentionPage = () => {
                                     <TableCell>
                                         <Typography variant='h6' sx={{ color: "#f02e4e" }}>Practice.</Typography>
                                     </TableCell>
-                                    <TableCell>
-                                        <Typography variant='h6' sx={{ color: "#f02e4e" }}>Delete.</Typography>
-                                    </TableCell>
                                 </TableRow>
                                 {words.map((word, index) => (
                                     <TableRow key={index}>
@@ -89,25 +102,16 @@ const VocabularyRetentionPage = () => {
                                         <Phonetic word={word} />
                                         <Sentences word={word} />
                                         <TableCell>
-                                            <Button
-                                                color="primary"
-                                                disableElevation
-                                                disableRipple
+                                            <IconButton
+                                                sx={{ color: "#2196f3", }}
+                                                onClick={() => handleRepeatWord(word)}
                                             >
                                                 <RepeatIcon />
-                                            </Button>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Button
-                                                color="primary"
-                                                disableElevation
-                                                disableRipple
-                                            >
-                                                <DeleteIcon />
-                                            </Button>
+                                            </IconButton>
                                         </TableCell>
                                     </TableRow>
                                 ))}
+                                <WordDialog open={isDialogOpen} onClose={() => handleClose(repeatWord)} word={repeatWord} />
                             </TableBody>
                         </Table>
                     </TableContainer>

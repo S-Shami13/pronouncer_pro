@@ -34,7 +34,7 @@ function FilterLessons({ onFilterClick }) {
             <button
                 id="filterBtnId"
                 onClick={handleFilterClick}
-                style={{ background: 'transparent', border: 'none', color: '#ffffff', cursor:'pointer' }}
+                style={{ background: 'transparent', border: 'none', color: '#f02e4e', cursor:'pointer' }}
                 aria-controls={open ? "filterMenuId" : undefined}
                 aria-haspopup="true"
                 aria-expanded={open ? "true" : undefined}

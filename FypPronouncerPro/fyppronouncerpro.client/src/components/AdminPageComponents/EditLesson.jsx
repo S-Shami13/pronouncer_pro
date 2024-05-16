@@ -1,13 +1,35 @@
-import { Typography, Stack, InputAdornment, TextField } from '@mui/material';
+import { Typography, Stack, InputAdornment, TextField, Container } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from 'react';
+import { GetOneLesson, EditParaLesson } from '../../ApiRequests';
 function EditLesson() {
+    const [searchText, setSearchText] = useState("");
     const [lessonData, setLessonData] = useState({
         lessonTitle: '',
         lessonContent: '',
         lessonLevel: '',
         focusWords: [],
     });
+
+    const handleSearchTextChange = (e) => {
+        setSearchText(e.target.value);
+    }
+
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            if (searchText) {
+                GetOneLesson(searchText)
+                    .then(response => {
+                        if (response) {
+                            setLessonData(response);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching lesson:', error);
+                    });
+            }
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -21,14 +43,17 @@ function EditLesson() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(lessonData);
+        EditParaLesson(searchText, lessonData);
     };
     return (
-        <Stack>
-            <Stack sx={{display:'flex',flexDirection:'row', alignItems:'center', justifyContent:"space-between", marginBottom:'10px'}}>
+        <Container>
+            <Stack sx={{display:'flex',flexDirection:'row', alignItems:'center', justifyContent:"space-between", margin:'10px 0px'}}>
                 <Typography variant="h4">Edit Lesson</Typography>
                 <TextField
                     label="Search with title.."
+                    value={searchText}
+                    onChange={handleSearchTextChange}
+                    onKeyPress={handleKeyPress}
                     type="text"
                     name="email"
                     InputProps={{
@@ -42,7 +67,7 @@ function EditLesson() {
             </Stack>
             <form onSubmit={handleSubmit}>
                 <TextField
-                    sx={{ mb: 2, width: "100%", p: 0 }}
+                    sx={{ mb: 2, width: "100%", p: 0, display:"none" }}
                     label="Title"
                     type="text"
                     name="lessonTitle"
@@ -58,6 +83,7 @@ function EditLesson() {
                     value={lessonData.lessonContent}
                     onChange={handleChange}
                     required
+                    multiline
                 />
                 <TextField
                     sx={{ mb: 2, width: "100%", p: 0 }}
@@ -89,12 +115,12 @@ function EditLesson() {
                         borderRadius: '5px'
                     }}
                     type="submit"
-                    value="Create"
+                    value="Edit"
                     required
                 />
             </form>
            
-        </Stack>
+        </Container>
     );
 }
 export default EditLesson;

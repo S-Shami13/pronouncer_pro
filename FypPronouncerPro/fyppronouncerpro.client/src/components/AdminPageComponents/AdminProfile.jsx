@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { Avatar, Menu, MenuItem, Tooltip, Zoom } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
-import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import { useNavigate } from 'react-router-dom';
 
-function UserProfile() {
+function AdminProfile() {
     const navigate = useNavigate();
-    const firstLetter = localStorage.email ? localStorage.email.charAt(0).toUpperCase() : '';
+    const firstLetter = localStorage.adminEmail ? localStorage.adminEmail.charAt(0).toUpperCase() : '';
 
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -18,13 +17,8 @@ function UserProfile() {
         setAnchorEl(null);
     };
 
-    const handleProgress = () => {
-        navigate('progress_page');
-        handleMenuClose();
-    };
-
     const handleLogout = () => {
-        localStorage.removeItem('email');
+        localStorage.removeItem('adminEmail');
         navigate('/');
         handleMenuClose();
     };
@@ -32,7 +26,7 @@ function UserProfile() {
     return (
         <div>
             <Tooltip title={localStorage.email} arrow TransitionComponent={Zoom}>
-                <Avatar sx={{ bgcolor: '#f02e4e' }} onClick={handleMenuOpen}>{firstLetter}</Avatar>
+                <Avatar sx={{ bgcolor: '#38a9de' }} onClick={handleMenuOpen}>{firstLetter}</Avatar>
             </Tooltip>
             <Menu
                 anchorEl={anchorEl}
@@ -43,13 +37,9 @@ function UserProfile() {
                     <LogoutIcon sx={{ mr: 1 }} />
                     Logout
                 </MenuItem>
-                <MenuItem onClick={handleProgress}>
-                    <HourglassBottomIcon sx={{ mr: 1 }} />
-                    Progress
-                </MenuItem>
             </Menu>
         </div>
     );
 }
 
-export default UserProfile;
+export default AdminProfile;

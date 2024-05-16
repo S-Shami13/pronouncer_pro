@@ -16,6 +16,27 @@
     align-items: center;
     justify-content: center;
 }
+
+.activeLink {
+    background-color: #dbf1fb;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+    padding: 5px 20px;
+    border-radius: 15px 0px 0px 15px;
+    cursor: pointer;
+}
+
+.lessonLink {
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+    padding: 5px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    .lessonLink:hover {
+        color: #f5f5f5;
+    }
 .PinkBtn {
     background: transparent;
     border: 1px solid #f02e4e;
@@ -74,14 +95,20 @@
 
 @keyframes zoom-in-zoom-out {
     0% {
-        transform: scale(1, 1);
+        transform: scale(1);
+        opacity: 1;
+        background-color: #bedffa;
     }
 
     50% {
-        transform: scale(1.5, 1.5);
+        transform: scale(1.2);
+        opacity: 0.8;
+        background-color: #ffffff;
     }
 
     100% {
-        transform: scale(1, 1);
+        transform: scale(1);
+        opacity: 1;
+        background-color: #bedffa;
     }
 }

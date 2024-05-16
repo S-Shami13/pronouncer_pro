@@ -69,15 +69,17 @@ function AppTopBar() {
                         resize:"none",
                     }}
                 />
-                <Link to={`random_para_lesson/${textareaValue}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <Button
-                        sx={{ m: 2 }}
-                        variant="outlined"
-                        endIcon={<HourglassTopIcon />}
-                    >
-                        Generate
-                    </Button>
-                 </Link>
+                {textareaValue &&
+                    (<Link to={`random_para_lesson/${textareaValue}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <Button
+                            sx={{ m: 2 }}
+                            variant="outlined"
+                            endIcon={<HourglassTopIcon />}
+                        >
+                            Generate
+                        </Button>
+                    </Link>)
+                }
             </Drawer>
         </>
         

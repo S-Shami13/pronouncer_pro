@@ -10,8 +10,39 @@ import {
 } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
+import { AdminSignInRequest } from "../../../ApiRequests";
 function AdminLogin({ AdminLoginOpen }) {
+
+    const navigate = useNavigate();
+
+    const [formData, setFormData] = useState({
+        adminEmail: '',
+        adminPassword: '',
+    });
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        AdminSignInRequest(formData)
+            .then(responseData => {
+                if (responseData.startsWith('Welcome')) {
+                    localStorage.setItem("adminEmail", formData.adminEmail);
+                    navigate('/admin');
+                    toast.success("Welcome to PronouncerPro!", {
+                        position: "bottom-right"
+                    });
+                }
+            })
+            .catch(error => {
+                console.log("catch", error);
+            });
+    }
 
     const [isDialogOpen, setIsDialogOpen] = useState(AdminLoginOpen);
     const handleClose = () => {
@@ -35,19 +66,23 @@ function AdminLogin({ AdminLoginOpen }) {
                         </DialogTitle>
                         <DialogContent>
                             <Stack sx={{ padding: { md: '10px 30px', xs: '0' } }}>
-                                <form>
+                                <form onSubmit={handleSubmit}>
                                     <TextField
                                         sx={{ mb: 2, width: "100%", p: 0 }}
                                         label="Admin Email"
                                         type="text"
-                                        name="email"
+                                        name="adminEmail"
+                                        value={formData.adminEmail}
+                                        onChange={handleChange}
                                         required
                                     />
                                     <TextField
                                         sx={{ mb: 2, width: "100%", p: 0 }}
                                         label="Admin Password"
                                         type="password"
-                                        name="password"
+                                        name="adminPassword"
+                                        value={formData.adminPassword}
+                                        onChange={handleChange}
                                         required
                                     />
                                     <input

@@ -2,11 +2,11 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
-const accoundBaseURL = 'https://localhost:7077/AccountsManagement';
+const accountBaseURL = 'https://localhost:7077/AccountsManagement';
 
 export const SignUpUserRequest = async (user) => {
     try {
-        const response = await axios.post(`${accoundBaseURL}/signup`, user);
+        const response = await axios.post(`${accountBaseURL}/signup`, user);
         toast.success(response.data, { position: 'bottom-right' });
         return true;
     } catch (error) {
@@ -19,7 +19,19 @@ export const SignUpUserRequest = async (user) => {
 
 export const SignInUserRequest = async (user) => {
     try {
-        const response = await axios.post(`${accoundBaseURL}/signin`, user);
+        const response = await axios.post(`${accountBaseURL}/signin`, user);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            toast.error(error.response.data, { position: 'bottom-right' });
+            return error.response.data;
+        }
+    }
+}
+
+export const AdminSignInRequest = async (admin) => {
+    try {
+        const response = await axios.post(`${accountBaseURL}/adminSignIn`, admin);
         return response.data;
     } catch (error) {
         if (error.response) {
@@ -31,7 +43,7 @@ export const SignInUserRequest = async (user) => {
 
 export const ForgotPasswordRequest = async (user) => {
     try {
-        const response = await axios.post(`${accoundBaseURL}/forgotpassword`, user);
+        const response = await axios.post(`${accountBaseURL}/forgotpassword`, user);
         toast.success(response.data, { position: 'bottom-right' });
         return response.data;
     } catch (error) {
@@ -41,11 +53,24 @@ export const ForgotPasswordRequest = async (user) => {
     }
 }
 
+export const GetAllUsersRequest = async() => {
+    try {
+        const response = await axios.get(`${accountBaseURL}/getAllUsers`);
+        console.log('all users', response.data);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            toast.error(error.response.data, { position: 'bottom-right' });
+        }
+    }
+}
+
+
 const lessonBaseURL = 'https://localhost:7077/ParaLessonManagement';
 
 export const CreateLesson = async (request) => {
     try {
-        const response = await axios.post(`${lessonBaseURL}/CreateLesson`, request);
+        const response = await axios.post(`${lessonBaseURL}/createLesson`, request);
         toast.success(response.data, { position: 'bottom-right' });
     } catch (error) {
         if (error.response) {
@@ -144,6 +169,23 @@ export const GetMyLessons = async (email) => {
     }
 };
 
+export const GetLessonSummary = async (email, level) => {
+    try {
+        const response = await axios.get(`${lessonBaseURL}/getLessonSummary`, {
+            params: {
+                email: email,
+                level: level
+            }
+        });
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            console.log(error.response.data);
+        }
+    }
+};
+
 export const GetMispronunciations = async (email, title) => {
     try {
         const response = await axios.get(
@@ -207,6 +249,68 @@ export const GetVocabularyCollection = async (email) => {
     }
 }
 
+export const GetOneLesson = async (title) => {
+    try {
+        const response = await axios.get(`${lessonBaseURL}/getOneLesson`, {
+            params: {
+                title: title,
+            }
+        });
+        return (response.data);
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            toast.error(error.response.data, { position: 'bottom-right' });
+            console.log("Lesson not found:", error.response.data);
+        } else {
+            toast.error(error.response.data, { position: 'bottom-right' });
+            console.error("Error fetching lesson:", error);
+        }
+    }
+}
+
+export const GetAllMispronunciations = async () => {
+    try {
+        const response = await axios.get(`${lessonBaseURL}/getAllMispronunciations`);
+        console.log("all mispronunciations", response.data);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            console.log(error.respose.data);
+        }
+    }
+}
+
+export const EditParaLesson = async (title, updatedLessonDTO) => {
+    try {
+        const response = await axios.put(`${lessonBaseURL}/editLesson/?title=${title}`, updatedLessonDTO);
+        toast.success(response.data, { position: 'bottom-right' }); 
+    } catch (error) {
+        if (error.response) {
+            toast.error(error.response.data, { position: 'bottom-right' });
+        } else {
+            console.error("Error editing lesson:", error.message);
+        }
+        throw error; 
+    }
+}
+
+export const DeleteParaLesson = async (title) => {
+    try {
+        const response = await axios.delete(`${lessonBaseURL}/deleteLesson`, {
+            params: {
+                title: title,
+            },
+        });
+        toast.success(response.data, { position: 'bottom-right' });
+    } catch (error) {
+        if (error.response) {
+            toast.error(error.response.data, { position: 'bottom-right' });
+        } else {
+            console.error("Error deleting lesson:", error.message);
+        }
+        throw error; 
+    }
+}
 
 export const GetPhoneticRequest = async (word) => {
     try {

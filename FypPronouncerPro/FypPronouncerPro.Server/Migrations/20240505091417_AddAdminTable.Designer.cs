@@ -3,6 +3,7 @@ using FypPronouncerPro.Server.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FypPronouncerPro.Server.Migrations
 {
     [DbContext(typeof(PronouncerDbContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240505091417_AddAdminTable")]
+    partial class AddAdminTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,10 +37,6 @@ namespace FypPronouncerPro.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AdminName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AdminPassword")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

@@ -10,6 +10,8 @@ import FocusWords from "./FocusWords";
 import HighlightedText from "./HighlightedText";
 import Mispronunciations from "./Mispronunciations";
 import FunctionalitySection from "./FunctionalitySection";
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import { Link } from 'react-router-dom';
 function App() {
 
     const params = useParams();
@@ -19,7 +21,10 @@ function App() {
     }
     return (
         <>
-            <Stack sx={{ padding: { md: '50px', xs: '20px' }, display: 'flex', flexDirection:'column' }}>
+            <Stack sx={{ padding: { md: '30px', xs: '20px' }, display: 'flex', flexDirection: 'column' }}>
+                <Link to="/main_page">
+                    <KeyboardBackspaceIcon fontSize="large" sx={{ color: "#f02e4e" }} />
+                </Link>
                 <Paper sx={{ display: 'flex', flexDirection: {md:'row',xs:'column'},alignItems:'center', padding:'20px'} }>
                     <UserGuide />
                     <FocusWords focusWords={params.focusWords} />

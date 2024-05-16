@@ -12,15 +12,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import AddLesson from './components/AdminPageComponents/AddLesson';
 import EditLesson from './components/AdminPageComponents/EditLesson';
 import DeleteLesson from './components/AdminPageComponents/DeleteLesson';
-import AddUser from './components/AdminPageComponents/AddUser';
-import EditUser from './components/AdminPageComponents/EditUser';
-import DeleteUser from './components/AdminPageComponents/DeleteUser';
 import AdminPage from './pages/AdminPage';
 import RandomParaLesson from './components/MainPageComponents/RandomParaLesson';
+import UserProgressPage from './pages/UserProgressPage';
+import ShowAllLessons from './components/AdminPageComponents/ShowAllLessons';
+import MostMispronuncedWords from './components/AdminPageComponents/MostMispronunciations';
+import ViewAllUsers from './components/AdminPageComponents/ViewAllUsers';
 
 function App() {
     
-
     return (
             <BrowserRouter>
                 <Routes>
@@ -34,14 +34,15 @@ function App() {
                         <Route path="random_para_lesson/:content" element={<RandomParaLesson />} />
                         <Route path="solo_audio_lesson" element={<SoloAudioLesson />} />
                         <Route path="vocabulary_retention_page" element={<VocabularyRetentionPage />} />
-                     </Route>
+                        <Route path="progress_page" element={<UserProgressPage />} />
+                    </Route>
                     <Route path='admin' element={<AdminPage/> }>
                         <Route index element={<AddLesson />} />
                         <Route path="edit_lesson" element={<EditLesson />} />
                         <Route path="delete_lesson" element={<DeleteLesson />} />
-                        <Route path="add_user" element={<AddUser />} />
-                        <Route path="edit_user" element={<EditUser />} />
-                        <Route path="delete_user" element={<DeleteUser />} />
+                        <Route path="all_lessons" element={<ShowAllLessons />} />
+                        <Route path="most_mispronunciations" element={<MostMispronuncedWords />} />
+                        <Route path="all_users" element={<ViewAllUsers />} />
                     </Route>
                 </Routes>
                 <ToastContainer/>

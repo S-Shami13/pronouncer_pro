@@ -1,34 +1,42 @@
-import AdminTopBar from '../components/AdminPageComponents/AdminTopBar';
 import { Outlet } from 'react-router-dom';
-import { Paper, Container, Typography, Box } from '@mui/material';
-import ShowAllLessons from '../components/AdminPageComponents/ShowAllLessons';
-import FilterLessons from '../components/AdminPageComponents/FilterLessons';
-import { useEffect, useState } from 'react';
+import { Stack, Typography } from '@mui/material';
+import logoImage from '../assets/logo.png';
+import LessonManagement from '../components/AdminPageComponents/LessonManagement';
+import MostMispronunciations from '../components/AdminPageComponents/MispronunciationManagemnet';
+import AllUsers from '../components/AdminPageComponents/UserManagement';
+import AdminProfile from '../components/AdminPageComponents/AdminProfile';
+
 function AdminPage() {
-    const [filterOption, setFilterOption] = useState(null);
-    const handleFilterClick = (result) => {
-        setFilterOption(result);
-    }
-    useEffect(() => {
-        console.log(filterOption);
-    }, [filterOption])
     return (
         <>
-            <AdminTopBar />
-            <Container sx={{ display: 'flex', flexDirection: 'row', justifyContent: "space-between", marginTop:'20px' }}>
-                <Paper sx={{ width: '30%', borderRadius:'5px'}}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#2196f3', padding: '10px 15px', borderRadius: '5px 5px 0px 0px' }}>
-                        <Typography variant="h4" sx={{ textAlign: 'center', color: '#f2f5fa' }}>All Lesson</Typography>
-                        <FilterLessons onFilterClick={handleFilterClick} />
-                    </Box>
-                    <ShowAllLessons filter={filterOption} />
-                </Paper>
-                <Paper sx={{ width: '60%', padding: '50px', height: 'fit-content' }}>
-                    <Outlet />
-                </Paper>
-            </Container>
-
+            <Stack sx={{ display: 'flex', flexDirection: { md: 'row', xs: 'column' } }}>
+                <Stack sx={{ backgroundColor: "#82d1f6", padding: '10px 20px', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+                    <img width="50%" style={{ cursor: 'pointer', alignSelf: 'center' }} src={logoImage} alt="image" />
+                    <LessonManagement />
+                    <MostMispronunciations />
+                    <AllUsers />
+                </Stack>
+                <Stack sx={{ width: '100%' }}>
+                    <Stack sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: "20px 20px", borderBottom: '1px solid #ccc' }}>
+                        <Typography
+                            component="h1"
+                            variant="h4"
+                            sx={{
+                                fontFamily: 'comfortaa',
+                                letterSpacing: { md: '3px', xs: "1px" },
+                            }}
+                        >
+                            Admin Dashboard
+                        </Typography>
+                        <AdminProfile />
+                    </Stack>
+                    <Stack>
+                        <Outlet />
+                    </Stack>
+                </Stack>
+            </Stack>
         </>
     );
 }
+
 export default AdminPage;

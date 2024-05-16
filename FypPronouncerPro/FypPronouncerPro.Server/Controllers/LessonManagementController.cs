@@ -19,11 +19,9 @@ namespace FypPronouncerPro.Server.Controllers
             this.databaseContext = databaseContext;
         }
 
-        // --------------POST REQUESTS------------------
-
 
         [HttpPost]
-        [Route("CreateLesson")]
+        [Route("createLesson")]
         public async Task<IActionResult> CreateLesson([FromBody] LessonDTO lessonDTO)
         {
             if (lessonDTO == null)
@@ -230,11 +228,6 @@ namespace FypPronouncerPro.Server.Controllers
         }
 
 
-
-
-        //-------------------GET REQUESTS----------------------
-
-
         [HttpGet]
         [Route("getAllLessons")]
         public async Task<IActionResult> GetAllParaLessons()
@@ -256,7 +249,35 @@ namespace FypPronouncerPro.Server.Controllers
             }
         }
 
-        // cards lessons
+
+        [HttpGet]
+        [Route("getLessonSummary")]
+        public async Task<ActionResult<Dictionary<string, int>>> GetLessonsSummary(string email, int level)
+        {
+            var student = await databaseContext.Students.FirstOrDefaultAsync(x => x.Email == email);
+            if (student == null)
+            {
+                return NotFound(); 
+            }
+
+            var userName = student.FullName;
+            var totalLessonsCount = databaseContext.Lessons.Count(lesson => lesson.LessonLevel == level);
+            var userLessonsCount = databaseContext.UserLessons.Count(lesson => lesson.LessonLevel == level && lesson.UserName == userName);
+
+            int notStartedCount = totalLessonsCount - userLessonsCount;
+            int completedCount = databaseContext.UserLessons.Count(lesson => lesson.LessonLevel == level && lesson.UserName == userName && lesson.IsComplited);
+            int inProgressCount = databaseContext.UserLessons.Count(lesson => lesson.LessonLevel == level && lesson.UserName == userName && !lesson.IsComplited);
+
+            var summary = new Dictionary<string, int>
+            {
+                { "completed", completedCount },
+                { "inProgress", inProgressCount },
+                { "notStarted", notStartedCount }
+            };
+
+            return Ok(summary);
+        }
+
 
         [HttpGet]
         [Route("getUnstartedLessons")]
@@ -375,8 +396,90 @@ namespace FypPronouncerPro.Server.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("getOneLesson")]
+        public async Task<IActionResult> GetOneLesson(string title)
+        {
+            if (title == null) { return BadRequest("Give title please"); }
+            var lesson = await databaseContext.Lessons.Where(x => x.LessonTitle == title).FirstOrDefaultAsync();
+            if (lesson == null)
+            {
+                return NotFound("Lesson not found with this title");
+            }
+            return Ok(lesson);
+        }
 
+        [HttpGet]
+        [Route("getAllMispronunciations")] 
+        public async Task<IActionResult> GetAllMispronunciations()
+        {
+            var allMispronunciations = await databaseContext.Mispronunciations.ToListAsync();
+            if(allMispronunciations == null)
+            {
+                return NotFound("No mispronunciation exist");
+            }
+            else
+            {
+                var words = allMispronunciations.SelectMany(m => m.M_What).ToList();
+                return Ok(words);
+            }
+        }
+       
+        [HttpPut]
+        [Route("editLesson/")]
+        public async Task<IActionResult> EditLesson(string title, [FromBody] LessonDTO updatedLessonDTO)
+        {
+            if (updatedLessonDTO == null)
+            {
+                return BadRequest("Invalid data");
+            }
 
+            try
+            {
+                var existingLesson = await databaseContext.Lessons
+                .FirstOrDefaultAsync(x => x.LessonTitle == title);
+
+                if (existingLesson == null)
+                {
+                    return NotFound($"Lesson with {title} not found");
+                }
+
+                existingLesson.LessonTitle = updatedLessonDTO.LessonTitle;
+                existingLesson.LessonContent = updatedLessonDTO.LessonContent;
+                existingLesson.LessonLevel = updatedLessonDTO.LessonLevel;
+                existingLesson.FocusWords = updatedLessonDTO.FocusWords;
+
+                await databaseContext.SaveChangesAsync();
+
+                return Ok("Lesson updated successfully");
+            }
+            catch (DbUpdateException ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.InnerException?.Message}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpDelete]
+        [Route("deleteLesson")]
+        public async Task<IActionResult> DeleteLesson(string title)
+        {
+            if(title == null)
+            {
+                return BadRequest("empty string");
+            }
+            var lesson = await databaseContext.Lessons.Where(x => x.LessonTitle == title).FirstOrDefaultAsync();    
+            if(lesson == null)
+            {
+                return NotFound("Lesson does not exist");
+            }
+            databaseContext.Lessons.Remove(lesson);
+            await databaseContext.SaveChangesAsync();
+            return Ok("Lesson Deleted Successfully");
+        }
 
     }
 }

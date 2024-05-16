@@ -13,6 +13,21 @@ namespace FypPronouncerPro.Server.Controllers
     {
         private readonly PronouncerDbContext dbContext = dbContext;
 
+        [HttpGet]
+        [Route("getAllUsers")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await dbContext.Students.ToListAsync();
+
+            if (users == null || !users.Any())
+            {
+                return NotFound("No users found");
+            }
+
+            return Ok(users);
+        }
+
+
         [HttpPost]
         [Route("signup")]
         public async Task<IActionResult> SignUP([FromBody] SignUPDTO student_dto)
@@ -44,8 +59,6 @@ namespace FypPronouncerPro.Server.Controllers
             return Ok("Student Registered Successfully");
         }
 
-        // sign up method
-
         [HttpPost]
         [Route("signin")]
         public async Task<IActionResult> SignIn([FromBody] SignInDTO student_dto)
@@ -62,6 +75,24 @@ namespace FypPronouncerPro.Server.Controllers
                 return BadRequest("Check your password");
             }
             return Ok("Welcome " + student.FullName);
+        }
+
+        [HttpPost]
+        [Route("adminSignIn")]
+        public async Task<IActionResult> AdminSignIn([FromBody] AdminSignInDTO admin_dto)
+        {
+            if (admin_dto == null) { return BadRequest("Empty Fields"); }
+
+            var admin = await dbContext.Admin.Where(x => x.AdminEmail == admin_dto.AdminEmail).FirstOrDefaultAsync();
+            if (admin == null)
+            {
+                return BadRequest("You are not Administrator!");
+            }
+            if (admin.AdminPassword != admin_dto.AdminPassword)
+            {
+                return BadRequest("Check your password");
+            }
+            return Ok("Welcome " + admin.AdminName);
         }
 
         [HttpPost]
@@ -106,5 +137,50 @@ namespace FypPronouncerPro.Server.Controllers
                 return Ok("Password has been changed Check From Your Email");
             }
         }
+
+        [HttpPut]
+        [Route("editprofile")]
+        public async Task<IActionResult> EditProfile([FromBody] SignInDTO student_dto)
+        {
+            if (student_dto == null)
+            {
+                return BadRequest("Empty Data");
+            }
+
+            var student = await dbContext.Students.FirstOrDefaultAsync(x => x.Email == student_dto.Email);
+            if (student == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            student.Email = student_dto.Email;
+            student.Password = student_dto.Password;
+
+            await dbContext.SaveChangesAsync();
+
+            return Ok("Profile updated successfully");
+        }
+
+        [HttpDelete]
+        [Route("deleteaccount")]
+        public async Task<IActionResult> DeleteAccount([FromBody] SignInDTO student_dto)
+        {
+            if (student_dto == null)
+            {
+                return BadRequest("Empty Data");
+            }
+
+            var student = await dbContext.Students.FirstOrDefaultAsync(x => x.Email == student_dto.Email);
+            if (student == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            dbContext.Students.Remove(student);
+            await dbContext.SaveChangesAsync();
+
+            return Ok("Account deleted successfully");
+        }
+
     }
 }
